@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.ResxSourceGenerator" />
+		<PackageReference Include="NLog.Extensions.Logging" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Localization\Langs.resx" EmitFormatMethods="true" Public="true" AccessModifier="Public" />
+	</ItemGroup>
+
+</Project>

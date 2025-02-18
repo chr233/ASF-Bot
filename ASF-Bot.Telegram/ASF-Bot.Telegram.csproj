@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<UserSecretsId>280dc5ac-13a8-432f-bec2-43a8c72da8a2</UserSecretsId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
+		<PackageReference Include="NLog.Extensions.Logging" />
+		<PackageReference Include="Telegram.Bot" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ASF-Bot.Data\ASF-Bot.Data.csproj" />
+		<ProjectReference Include="..\ASF-Bot.Infrastructure\ASF-Bot.Infrastructure.csproj" />
+		<ProjectReference Include="..\ASF-Bot.Service.Telegram\ASF-Bot.Service.Telegram.csproj" />
+		<ProjectReference Include="..\ASF-Bot.Service\ASF-Bot.Service.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="config.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="nlog.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

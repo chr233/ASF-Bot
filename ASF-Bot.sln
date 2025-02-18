@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASF-Bot.Telegram", "ASF-Bot.Telegram\ASF-Bot.Telegram.csproj", "{7E448EE5-7655-4EE1-AA87-6A6AB7EEF8AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. 解决方案项", "0. 解决方案项", "{6BE95C70-E158-4546-A10F-462113B4BEE1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		build.ps1 = build.ps1
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. 基础设施", "1. 基础设施", "{C1B4C09C-FAEC-478A-ABB6-026034E3F710}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASF-Bot.Infrastructure", "ASF-Bot.Infrastructure\ASF-Bot.Infrastructure.csproj", "{BB3F1DC3-4529-443C-8694-CB7C59D6A2E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. 实体", "2. 实体", "{8C175709-54BC-413B-932C-B36573B1BE85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASF-Bot.Data", "ASF-Bot.Data\ASF-Bot.Data.csproj", "{D79ADAFA-2DFF-40E7-BB19-0F46ED576453}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. 服务", "3. 服务", "{1E0177BC-4A36-42E2-AB36-8CB6F70DEE1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASF-Bot.Service", "ASF-Bot.Service\ASF-Bot.Service.csproj", "{000CAB3E-053C-499E-81C9-BF0791234596}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. 应用", "4. 应用", "{5C9BF871-BB79-4A61-B208-31E573E24F73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASF-Bot.Service.Telegram", "ASF-Bot.Service.Telegram\ASF-Bot.Service.Telegram.csproj", "{A31E482F-9C4E-49F5-BE0F-0E1883937D51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASF-Bot.Model", "ASF-Bot.Model\ASF-Bot.Model.csproj", "{077EB529-8CCB-41D9-80F5-DB9D5331944B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E448EE5-7655-4EE1-AA87-6A6AB7EEF8AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E448EE5-7655-4EE1-AA87-6A6AB7EEF8AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E448EE5-7655-4EE1-AA87-6A6AB7EEF8AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E448EE5-7655-4EE1-AA87-6A6AB7EEF8AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB3F1DC3-4529-443C-8694-CB7C59D6A2E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB3F1DC3-4529-443C-8694-CB7C59D6A2E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB3F1DC3-4529-443C-8694-CB7C59D6A2E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB3F1DC3-4529-443C-8694-CB7C59D6A2E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D79ADAFA-2DFF-40E7-BB19-0F46ED576453}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D79ADAFA-2DFF-40E7-BB19-0F46ED576453}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D79ADAFA-2DFF-40E7-BB19-0F46ED576453}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D79ADAFA-2DFF-40E7-BB19-0F46ED576453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{000CAB3E-053C-499E-81C9-BF0791234596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{000CAB3E-053C-499E-81C9-BF0791234596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{000CAB3E-053C-499E-81C9-BF0791234596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{000CAB3E-053C-499E-81C9-BF0791234596}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A31E482F-9C4E-49F5-BE0F-0E1883937D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A31E482F-9C4E-49F5-BE0F-0E1883937D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A31E482F-9C4E-49F5-BE0F-0E1883937D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A31E482F-9C4E-49F5-BE0F-0E1883937D51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{077EB529-8CCB-41D9-80F5-DB9D5331944B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{077EB529-8CCB-41D9-80F5-DB9D5331944B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{077EB529-8CCB-41D9-80F5-DB9D5331944B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{077EB529-8CCB-41D9-80F5-DB9D5331944B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7E448EE5-7655-4EE1-AA87-6A6AB7EEF8AC} = {5C9BF871-BB79-4A61-B208-31E573E24F73}
+		{BB3F1DC3-4529-443C-8694-CB7C59D6A2E3} = {C1B4C09C-FAEC-478A-ABB6-026034E3F710}
+		{D79ADAFA-2DFF-40E7-BB19-0F46ED576453} = {8C175709-54BC-413B-932C-B36573B1BE85}
+		{000CAB3E-053C-499E-81C9-BF0791234596} = {1E0177BC-4A36-42E2-AB36-8CB6F70DEE1D}
+		{A31E482F-9C4E-49F5-BE0F-0E1883937D51} = {1E0177BC-4A36-42E2-AB36-8CB6F70DEE1D}
+		{077EB529-8CCB-41D9-80F5-DB9D5331944B} = {8C175709-54BC-413B-932C-B36573B1BE85}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3C884C15-1700-4A18-B90A-0A79ADC9CA87}
+	EndGlobalSection
+EndGlobal

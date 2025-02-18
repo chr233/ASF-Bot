@@ -1,0 +1,63 @@
+<Project>
+	<PropertyGroup>
+		<Version>1.0.0.0</Version>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>Chr_</Authors>
+		<ApplicationIcon>../resources/icon.ico</ApplicationIcon>
+		<CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+		<Company>chrxw.com</Company>
+		<Copyright>Copyright © 2025-$([System.DateTime]::UtcNow.Year) $(Company)</Copyright>
+		<Description>An Archisteamfarm IPC bot by Chr_.</Description>
+		<Deterministic>true</Deterministic>
+		<ErrorReport>none</ErrorReport>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+		<NeutralLanguage>zh-cn</NeutralLanguage>
+		<Nullable>enable</Nullable>
+		<PackageIcon>$(ApplicationIcon)</PackageIcon>
+		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/chr233/XinjingdailyBot</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
+		<RepositoryBranch>main</RepositoryBranch>
+		<RepositoryType>Git</RepositoryType>
+		<RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+		<RollForward>LatestMajor</RollForward>
+		<RootNamespace>$(MSBuildProjectName.Replace(" ", "_").Replace("-", "_"))</RootNamespace>
+		<RuntimeIdentifiers>linux-arm;linux-arm64;linux-x64;osx-arm64;osx-x64;win-arm64;win-x64</RuntimeIdentifiers>
+		<TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DebugType>portable</DebugType>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>full</TrimMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>true</SelfContained>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DebugType>none</DebugType>
+		<DebugSymbols>false</DebugSymbols>
+		<DebuggerSupport>false</DebuggerSupport>
+		<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+		<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+		<EventSourceSupport>false</EventSourceSupport>
+		<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+		<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+		<UseNativeHttpHandler>true</UseNativeHttpHandler>
+		<SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	</PropertyGroup>
+
+</Project>
