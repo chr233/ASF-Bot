@@ -14,8 +14,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ASF-Bot.Data\ASF-Bot.Data.csproj" />
-		<ProjectReference Include="..\ASF-Bot.Infrastructure\ASF-Bot.Infrastructure.csproj" />
+		<ProjectReference Include="..\ASF-Bot.Data\ASF-Bot.Data.csproj">
+		  <Private>False</Private>
+		</ProjectReference>
+		<ProjectReference Include="..\ASF-Bot.Infrastructure\ASF-Bot.Infrastructure.csproj">
+		  <Private>False</Private>
+		</ProjectReference>
 	</ItemGroup>
 
 </Project>

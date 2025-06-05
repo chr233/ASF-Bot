@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -9,6 +9,7 @@
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
 		<PackageReference Include="NLog.Extensions.Logging" />
+		<PackageReference Include="System.Private.Uri" />
 		<PackageReference Include="Telegram.Bot" />
 	</ItemGroup>
 
