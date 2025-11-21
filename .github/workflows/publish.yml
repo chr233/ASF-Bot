@@ -37,7 +37,7 @@ jobs:
         shell: pwsh
         run: |
           dotnet restore ${{ env.PROJECT_NAME }}
-          dotnet build ${{ env.PROJECT_NAME }} -c ${{ env.CONFIGURATION }} -p:ContinuousIntegrationBuild=true -p:TargetLatestRuntimePatch=false -p:UseAppHost=false --no-restore --nologo
+          dotnet build ${{ env.PROJECT_NAME }} -c ${{ env.CONFIGURATION }} --no-restore --nologo
 
       - name: Publish ${{ env.PROJECT_NAME }} via ${{ matrix.framework }}
         shell: pwsh
