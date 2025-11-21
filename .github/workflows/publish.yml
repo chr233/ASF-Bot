@@ -42,7 +42,7 @@ jobs:
       - name: Publish ${{ env.PROJECT_NAME }} via ${{ matrix.framework }}
         shell: pwsh
         run: |
-          $variants = $${{ env.ARCH_LIST }}.Split(',')
+          $variants = "${{ env.ARCH_LIST }}".Split(',')
           $framework = "${{ matrix.framework }}"
           $config = "${{ env.CONFIGURATION}}"
           $projectName = "${{ env.PROJECT_NAME }}"
