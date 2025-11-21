@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_NAME: "ASF-Bot.Telegram"
   CONFIGURATION: Release
-  DOTNET_SDK_VERSION: 9.0.x
+  DOTNET_SDK_VERSION: 10.0.x
   ARCH_LIST: "win-x64,win-arm64,linux-x64,linux-arm,linux-arm64"
 jobs:
   build:
