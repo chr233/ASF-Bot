@@ -28,7 +28,7 @@ public static class BotClientExtension
         string text,
         Message message,
         ParseMode parsemode = ParseMode.Markdown,
-        IReplyMarkup? replyMarkup = null,
+        ReplyMarkup? replyMarkup = null,
         LinkPreviewOptions? linkPreviewOptions = null,
         CancellationToken cancellationToken = default)
     {

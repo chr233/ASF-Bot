@@ -12,7 +12,7 @@ public static class BuildInfo
     {
         var assembly = Assembly.GetExecutingAssembly() ?? throw new NullReferenceException("Assembly.GetExecutingAssembly() is null");
 
-        AppPath = assembly.Location ?? AppContext.BaseDirectory;
+        AppPath = AppContext.BaseDirectory;
         AppDir = !string.IsNullOrEmpty(AppPath) ? Directory.GetParent(AppPath)?.FullName ?? "." : AppContext.BaseDirectory;
 
         AppName = "ASF-Bot";

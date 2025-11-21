@@ -4,30 +4,30 @@ on:
   push:
     tags:
       - "*"
+
 env:
   PROJECT_NAME: "ASF-Bot.Telegram"
   CONFIGURATION: Release
-  DOTNET_SDK_VERSION: 9.0.x
-
+  ARCH_LIST: "win-x64,win-arm64,linux-x64,linux-arm,linux-arm64"
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        arch: [win-x64, win-arm64, linux-x64, linux-arm, linux-arm64]
+        framework: [8, 9, 10]
 
     runs-on: windows-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v5.0.0
         with:
           submodules: recursive
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v4.0.1
+        uses: actions/setup-dotnet@v5.0.0
         with:
-          dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
+          dotnet-version: ${{ matrix.framework }}.0.x
 
       - name: Verify .NET Core
         run: dotnet --info
@@ -38,38 +38,34 @@ jobs:
           dotnet restore ${{ env.PROJECT_NAME }}
           dotnet build ${{ env.PROJECT_NAME }} -c ${{ env.CONFIGURATION }} -p:ContinuousIntegrationBuild=true -p:TargetLatestRuntimePatch=false -p:UseAppHost=false --no-restore --nologo
 
-      - name: Publish ${{ env.PROJECT_NAME }} ${{ matrix.arch }}
+      - name: Publish ${{ env.PROJECT_NAME }} via .Net ${{ matrix.framework }}
         shell: pwsh
         run: |
-          $propertyArgs = "-p:PublishTrimmed=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true"
-          $commonArgs = "-r ${{ matrix.arch }} -f net9.0 ${{ env.PROJECT_NAME }} -c ${{ env.CONFIGURATION }} --no-restore --nologo"
+          $variants = $${{env.ARCH_LIST}}.Split(',')
+          $framework = "net${{ matrix.framework }}.0"
 
-          dotnet publish -o "./tmp/${{ env.PROJECT_NAME }}-fde" --self-contained=true $propertyArgs $commonArgs
-          dotnet publish -o "./tmp/${{ env.PROJECT_NAME }}" --self-contained=false $propertyArgs $commonArgs
+          foreach ($variant in $variants) {
+            $propertyArgs = "-p:PublishTrimmed=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true"
+            $commonArgs = "-r $variant -f $framework ${{ env.PROJECT_NAME }} -c ${{ env.CONFIGURATION }} --no-restore --nologo"
 
-      - name: Clean Xmls
-        shell: pwsh
-        run: |
-          Remove-Item "./tmp/${{ env.PROJECT_NAME }}-fde/*.xml" 
-          Remove-Item "./tmp/${{ env.PROJECT_NAME }}/*.xml"
+            $buildName = "${{ env.PROJECT_NAME }}-$variant-$framework"
 
-      - name: Zip files
-        run: |
-          7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/${{ matrix.arch }}-fde.zip" "./tmp/${{ env.PROJECT_NAME }}-fde/*"
-          7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/${{ matrix.arch }}.zip" "./tmp/${{ env.PROJECT_NAME }}/*"
-      - name: Upload ${{ env.PROJECT_NAME }}-fde ${{ matrix.arch }}
+            dotnet publish -o "./tmp/$buildName-fde" --self-contained=true $propertyArgs $commonArgs
+            dotnet publish -o "./tmp/$buildName" --self-contained=false $propertyArgs $commonArgs
+
+            Remove-Item "./tmp/$buildName-fde/*.xml" 
+            Remove-Item "./tmp/$buildName/*.xml"
+
+            7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName-fde.zip" "./tmp/$buildName-fde/*"
+            7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName.zip" "./tmp/$buildName/*"
+          }
+
+      - name: Upload ${{ env.PROJECT_NAME }} via .Net ${{ matrix.framework }}
         continue-on-error: true
-        uses: actions/upload-artifact@v4.3.6
+        uses: actions/upload-artifact@v5.0.0
         with:
-          name: ${{ matrix.arch }}-fde
-          path: ./dist/${{ matrix.arch }}-fde.zip
-
-      - name: Upload ${{ env.PROJECT_NAME }} ${{ matrix.arch }}
-        continue-on-error: true
-        uses: actions/upload-artifact@v4.3.6
-        with:
-          name: ${{ matrix.arch }}
-          path: ./dist/${{ matrix.arch }}.zip
+          name: .Net-${{ matrix.framework }}-Build-Artifacts
+          path: ./dist/*.zip
 
   release:
     needs: build
@@ -77,80 +73,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v5.0.1
 
-      - name: Download win-x64-fde artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
+      - name: Download all artifacts
+        uses: actions/download-artifact@v5.0.0
         with:
-          name: win-x64-fde
-          path: out
-
-      - name: Download win-x64 artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: win-x64
-          path: out
-
-      - name: Download win-arm64-fde artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: win-arm64-fde
-          path: out
-
-      - name: Download win-arm64 artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: win-arm64
-          path: out
-
-      - name: Download linux-x64-fde artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: linux-x64-fde
-          path: out
-
-      - name: Download linux-x64 artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: linux-x64
-          path: out
-
-      - name: Download linux-arm-fde artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: linux-arm-fde
-          path: out
-
-      - name: Download linux-arm artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: linux-arm
-          path: out
-
-      - name: Download linux-arm64-fde artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: linux-arm64-fde
-          path: out
-
-      - name: Download linux-arm64 artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4.1.8
-        with:
-          name: linux-arm64
           path: out
 
       - name: Create ${{ env.PROJECT_NAME }} GitHub release
-        uses: ncipollo/release-action@v1.14.0
+        uses: ncipollo/release-action@v1.20.0
         with:
           artifacts: "out/*"
           makeLatest: false
@@ -159,9 +90,9 @@ jobs:
           name: ${{ env.PROJECT_NAME }} ${{ github.ref_name }}
           body: |
             # 更新说明
-            ![XinjingdailyBot Release](https://img.shields.io/badge/ASF-Bot-${{ github.ref_name }}-brightgreen) ![Downloads](https://img.shields.io/github/downloads/chr233/ASF-Bot.Telegram/${{ github.ref_name }}/total?label=Downloads)
+            ![ASF.Bot Release](https://img.shields.io/badge/ASF-Bot-${{ github.ref_name }}-brightgreen) ![Downloads](https://img.shields.io/github/downloads/chr233/ASF-Bot.Telegram/${{ github.ref_name }}/total?label=Downloads)
 
-            release created bt github actions
+            release created by github actions
 
             ---
 
