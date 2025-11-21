@@ -46,15 +46,12 @@ jobs:
           $framework = "${{ matrix.framework }}"
 
           foreach ($variant in $variants) {
-            $propertyArgs = "-p:PublishTrimmed=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true  -p:UseAppHost=true"
-            $commonArgs = "-r $variant -f $framework ${{ env.PROJECT_NAME }} -c ${{ env.CONFIGURATION }} --no-restore --nologo"
-
             $buildName = "${{ env.PROJECT_NAME }}-$variant-$framework"
 
-            dotnet publish -o "./tmp/$buildName-fde" --self-contained=true $propertyArgs $commonArgs
-            dotnet publish -o "./tmp/$buildName" --self-contained=false $propertyArgs $commonArgs
+            dotnet publish ${{ env.PROJECT_NAME }} --output "./tmp/$buildName-fde" --self-contained=true --runtime $variant --framework $framework --configuration DEBUG --no-restore --nologo -p:PublishTrimmed=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true  -p:UseAppHost=true
+            dotnet publish ${{ env.PROJECT_NAME }} --output "./tmp/$buildName" --self-contained=false $propertyArgs $commonArgs -p:PublishTrimmed=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true  -p:UseAppHost=true
 
-            Remove-Item "./tmp/$buildName-fde/*.xml" 
+            Remove-Item "./tmp/$buildName-fde/*.xml"
             Remove-Item "./tmp/$buildName/*.xml"
 
             7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName-fde.zip" "./tmp/$buildName-fde/*"
