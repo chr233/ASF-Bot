@@ -3,7 +3,7 @@ $variants = "linux-x64", "linux-arm64", "win-x64", "win-arm64"
 $projectName = "ASF-Bot.Telegram"
 
 foreach ($variant in $variants) {
-    $buildArgs = '-p:PublishSingleFile=true', '--self-contained=false'
+    $buildArgs = '-p:PublishSingleFile=true', '--self-contained=false', '-p:UseAppHost=true'
     $buildFdeArgs = '-p:PublishSingleFile=true', '--self-contained=true'
 
     $commonArgs = '-r', "$variant", '-f', "net9.0", '-p:PublishTrimmed=true', '-p:IncludeNativeLibrariesForSelfExtract=true' , '-p:ContinuousIntegrationBuild=true', '--no-restore', '--nologo'
