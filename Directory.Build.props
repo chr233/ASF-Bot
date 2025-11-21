@@ -1,6 +1,6 @@
 <Project>
 	<PropertyGroup>
-		<Version>1.0.0.3</Version>
+		<Version>1.0.0.4</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -19,7 +19,7 @@
 		<Nullable>enable</Nullable>
 		<PackageIcon>$(ApplicationIcon)</PackageIcon>
 		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/chr233/XinjingdailyBot</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/chr233/ASF-Bot</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>$(PackageProjectUrl)/releases</PackageReleaseNotes>
 		<RepositoryBranch>main</RepositoryBranch>

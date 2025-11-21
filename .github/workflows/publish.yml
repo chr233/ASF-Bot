@@ -8,13 +8,14 @@ on:
 env:
   PROJECT_NAME: "ASF-Bot.Telegram"
   CONFIGURATION: Release
+  DOTNET_SDK_VERSION: 9.0.x
   ARCH_LIST: "win-x64,win-arm64,linux-x64,linux-arm,linux-arm64"
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        framework: [8, 9, 10]
+        framework: [net8.0, net9.0, net10.0]
 
     runs-on: windows-latest
 
@@ -27,7 +28,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v5.0.0
         with:
-          dotnet-version: ${{ matrix.framework }}.0.x
+          dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
 
       - name: Verify .NET Core
         run: dotnet --info
@@ -38,11 +39,11 @@ jobs:
           dotnet restore ${{ env.PROJECT_NAME }}
           dotnet build ${{ env.PROJECT_NAME }} -c ${{ env.CONFIGURATION }} -p:ContinuousIntegrationBuild=true -p:TargetLatestRuntimePatch=false -p:UseAppHost=false --no-restore --nologo
 
-      - name: Publish ${{ env.PROJECT_NAME }} via .Net ${{ matrix.framework }}
+      - name: Publish ${{ env.PROJECT_NAME }} via ${{ matrix.framework }}
         shell: pwsh
         run: |
           $variants = $${{env.ARCH_LIST}}.Split(',')
-          $framework = "net${{ matrix.framework }}.0"
+          $framework = "${{ matrix.framework }}"
 
           foreach ($variant in $variants) {
             $propertyArgs = "-p:PublishTrimmed=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true"
@@ -60,11 +61,11 @@ jobs:
             7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName.zip" "./tmp/$buildName/*"
           }
 
-      - name: Upload ${{ env.PROJECT_NAME }} via .Net ${{ matrix.framework }}
+      - name: Upload ${{ env.PROJECT_NAME }} via ${{ matrix.framework }}
         continue-on-error: true
         uses: actions/upload-artifact@v5.0.0
         with:
-          name: .Net-${{ matrix.framework }}-Build-Artifacts
+          name: ${{ matrix.framework }}-Build-Artifacts
           path: ./dist/*.zip
 
   release:
