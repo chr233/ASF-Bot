@@ -13,8 +13,8 @@ foreach ($runtime in $runtimes) {
 
     $outputDir = "./dist/$buildName"
 
-    dotnet publish $projectName --output "$outputDir" --self-contained --runtime $runtime --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=$enableTrim -p:TrimMode=$trimMode -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true  -p:UseAppHost=true
-    dotnet publish $projectName --output "$outputDir" --no-self-contained --runtime $runtime --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=$enableTrim -p:TrimMode=$trimMode -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true  -p:UseAppHost=true
+    dotnet publish $projectName --output "$outputDir" --self-contained --runtime $runtime --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=$enableTrim -p:TrimMode=$trimMode -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
+    dotnet publish $projectName --output "$outputDir" --no-self-contained --runtime $runtime --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=$enableTrim -p:TrimMode=$trimMode -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
 
     Remove-Item "$outputDir-fde/*.xml"
     Remove-Item "$outputDir/*.xml"
