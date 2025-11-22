@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/0. 解决方案项/">
+    <File Path=".editorconfig" />
+    <File Path="build.ps1" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/1. 基础设施/">
+    <Project Path="ASF-Bot.Infrastructure/ASF-Bot.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/2. 实体/">
+    <Project Path="ASF-Bot.Data/ASF-Bot.Data.csproj" />
+    <Project Path="ASF-Bot.Model/ASF-Bot.Model.csproj" />
+  </Folder>
+  <Folder Name="/3. 服务/">
+    <Project Path="ASF-Bot.Service.Telegram/ASF-Bot.Service.Telegram.csproj" />
+    <Project Path="ASF-Bot.Service/ASF-Bot.Service.csproj" />
+  </Folder>
+  <Folder Name="/4. 应用/">
+    <Project Path="ASF-Bot.Telegram/ASF-Bot.Telegram.csproj" />
+  </Folder>
+</Solution>
