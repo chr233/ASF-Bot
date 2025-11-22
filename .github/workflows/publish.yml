@@ -9,7 +9,7 @@ env:
   PROJECT_NAME: "ASF-Bot.Telegram"
   CONFIGURATION: Release
   DOTNET_SDK_VERSION: 10.0.x
-  ARCH_LIST: "win-x64,win-arm64,linux-x64,linux-arm,linux-arm64"
+  RUNTIME_LIST: "win-x64,win-arm64,linux-x64,linux-arm,linux-arm64"
 jobs:
   build:
     strategy:
@@ -42,23 +42,24 @@ jobs:
       - name: Publish ${{ env.PROJECT_NAME }} via ${{ matrix.framework }}
         shell: pwsh
         run: |
-          $variants = "${{ env.ARCH_LIST }}".Split(',')
+          $runtimes = "${{ env.RUNTIME_LIST }}".Split(',')
           $framework = "${{ matrix.framework }}"
           $config = "${{ env.CONFIGURATION}}"
           $projectName = "${{ env.PROJECT_NAME }}"
 
-          foreach ($variant in $variants) {
-            Write-Debug "Publishing for variant: $variant and framework: $framework"
-            $buildName = "${{ env.PROJECT_NAME }}-$variant-$framework"
+          foreach ($runtime in $runtimes) {
+            Write-Debug "Publishing for runtime: $runtime and framework: $framework"
+            $buildName = "$projectName-$runtime-$framework"
+            $outputDir = "./tmp/$buildName"
 
-            dotnet publish $projectName --output "./tmp/$buildName-fde" --self-contained=true --runtime $variant --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true  -p:UseAppHost=true
-            dotnet publish $projectName --output "./tmp/$buildName" --self-contained=false --runtime $variant --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true  -p:UseAppHost=true
+            dotnet publish $projectName --output "$outputDir" --self-contained --runtime $runtime --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=false -p:PublishReadyToRun=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
+            dotnet publish $projectName --output "$outputDir" --no-self-contained --runtime $runtime --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=false -p:PublishReadyToRun=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
 
-            Remove-Item "./tmp/$buildName-fde/*.xml"
-            Remove-Item "./tmp/$buildName/*.xml"
+            Remove-Item "$outputDir-fde/*.xml"
+            Remove-Item "$outputDir/*.xml"
 
-            7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName-fde.zip" "./tmp/$buildName-fde/*"
-            7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName.zip" "./tmp/$buildName/*"
+            7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName-fde.zip" "$outputDir/*"
+            7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName.zip" "$outputDir/*"
           }
 
       - name: Upload ${{ env.PROJECT_NAME }} via ${{ matrix.framework }}
