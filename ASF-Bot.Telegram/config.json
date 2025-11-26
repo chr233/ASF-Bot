@@ -4,23 +4,33 @@
     "Statistic": true
   },
 
+  //数据库配置
   "Database": {
     "Generate": true,
     "LogSQL": false,
-    
+
     //使用 Sqlite
     "DbType": "sqlite",
     "DbName": "data"
 
-    //使用 Mysql, 也支持 Pgsql
+    //使用 Mysql
     //"DbType": "mysql",
     //"DbHost": "localhost",
     //"DbPort": 3306,
     //"DbName": "db_name",
     //"DbUser": "root",
     //"DbPassword": "root"
+
+    //使用 Pgsql
+    //"DbType": "pgsql",
+    //"DbHost": "localhost",
+    //"DbPort": 5432,
+    //"DbName": "db_name",
+    //"DbUser": "root",
+    //"DbPassword": "root"
   },
 
+  //Telegram 机器人配置
   "Telegram": {
     "Proxy": null,
     "BotToken": "123456:abcdefg",
@@ -28,6 +38,7 @@
     "DropPendingUpdates": false
   },
 
+  //IPC接口列表, 支持多个ASF实例, 使用命令切换
   "AsfIpcs": [
     {
       "Name": "example",
