@@ -5,6 +5,7 @@
 		<UserSecretsId>280dc5ac-13a8-432f-bec2-43a8c72da8a2</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+		<ContainerRepository>dotnet-worker-image</ContainerRepository>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -30,7 +31,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="nlog.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 

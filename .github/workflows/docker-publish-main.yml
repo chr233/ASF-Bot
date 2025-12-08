@@ -1,0 +1,77 @@
+name: ASF-docker-publish-main
+
+on:
+  push:
+    branches:
+    - main
+
+env:
+  PLATFORMS: linux/amd64,linux/arm,linux/arm64
+  TAG: main
+
+permissions:
+  packages: write
+
+jobs:
+  main:
+    environment: release-docker
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      with:
+        show-progress: false
+        submodules: recursive
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+    - name: Login to ghcr.io
+      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Login to DockerHub
+      uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Prepare environment outputs
+      shell: sh
+      run: |
+        set -eu
+
+        echo "DATE_ISO8601=$(date --iso-8601=seconds --utc)" >> "$GITHUB_ENV"
+        echo "GHCR_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+        echo "DH_REPOSITORY=$(echo ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+
+    - name: Build and publish Docker image from Dockerfile
+      uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+      with:
+        context: .
+        platforms: ${{ env.PLATFORMS }}
+        provenance: true
+        sbom: true
+        secrets: |
+          ASF_PRIVATE_SNK=${{ secrets.ASF_PRIVATE_SNK }}
+          STEAM_TOKEN_DUMPER_TOKEN=${{ secrets.STEAM_TOKEN_DUMPER_TOKEN }}
+        labels: |
+          org.opencontainers.image.created=${{ env.DATE_ISO8601 }}
+          org.opencontainers.image.version=${{ github.sha }}
+          org.opencontainers.image.revision=${{ github.sha }}
+        tags: |
+          ghcr.io/${{ env.GHCR_REPOSITORY }}:${{ env.TAG }}
+          ${{ env.DH_REPOSITORY }}:${{ env.TAG }}
+        push: true
+
+    - name: Update DockerHub repository description
+      uses: peter-evans/dockerhub-description@1b9a80c056b620d92cedb9d9b5a223409c68ddfa # v5.0.0
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        repository: ${{ env.DH_REPOSITORY }}
+        short-description: ${{ github.event.repository.description }}
