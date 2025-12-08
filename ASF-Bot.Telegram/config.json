@@ -11,7 +11,7 @@
 
     //使用 Sqlite
     "DbType": "sqlite",
-    "DbName": "data"
+    "DbName": "config/data"
 
     //使用 Mysql
     //"DbType": "mysql",

@@ -8,6 +8,15 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace ASF_Bot.Service.Telegram.Handlers;
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="_logger"></param>
+/// <param name="_botClient"></param>
+/// <param name="_validUserService"></param>
+/// <param name="_asfHandler"></param>
+/// <param name="_tgChatService"></param>
 public class QueryHandler(
     ILogger<QueryHandler> _logger,
     ITelegramBotClient _botClient,
@@ -15,6 +24,12 @@ public class QueryHandler(
     AsfHandler _asfHandler,
     ChatSettingService _tgChatService)
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
     public async Task HandleCallbackQuery(CallbackQuery query, CancellationToken cancellation)
     {
         if (!_validUserService.ValidUser(query.From))
@@ -74,11 +89,26 @@ public class QueryHandler(
         };
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="message"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
     public async Task Cancel(CallbackQuery query, Message message, CancellationToken cancellation)
     {
         await _botClient.EditMessageText(message.Chat, message.MessageId, "操作已取消", cancellationToken: cancellation).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="args"></param>
+    /// <param name="query"></param>
+    /// <param name="message"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
     public async Task SwitchIpc(string[] args, CallbackQuery query, Message message, CancellationToken cancellation)
     {
         if (_asfHandler.IpcCount == 0)

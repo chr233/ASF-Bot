@@ -13,7 +13,6 @@ permissions:
 
 jobs:
   main:
-    environment: release-docker
     runs-on: ubuntu-latest
 
     steps:

@@ -8,6 +8,15 @@ using Telegram.Bot.Types.Enums;
 
 namespace ASF_Bot.Service.Telegram.Service;
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="_logger"></param>
+/// <param name="_botClient"></param>
+/// <param name="_validUserService"></param>
+/// <param name="_commandHandler"></param>
+/// <param name="_queryHandler"></param>
+/// <param name="_telegramHandler"></param>
 public sealed class DispatchService(
     ILogger<DispatchService> _logger,
     ITelegramBotClient _botClient,
@@ -18,6 +27,12 @@ public sealed class DispatchService(
 {
     private User? _me;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
     public async Task OnMessageReceived(Message message, CancellationToken cancellation)
     {
         if (message.Type == MessageType.NewChatTitle || message.Type == MessageType.ForumTopicEdited)
@@ -60,6 +75,12 @@ public sealed class DispatchService(
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
     public Task OnCallbackQueryReceived(CallbackQuery query, CancellationToken cancellation)
     {
         if (!_validUserService.ValidUser(query.From))
@@ -76,6 +97,12 @@ public sealed class DispatchService(
         return _queryHandler.HandleCallbackQuery(query, cancellation);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="update"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
     public Task OnOtherUpdateReceived(Update update, CancellationToken cancellation)
     {
         _logger.LogUpdate(update);

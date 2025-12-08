@@ -2,8 +2,15 @@ using ASF_Bot.Data.Responses;
 using SteamKit2;
 
 namespace ASF_Bot.Data.Datas;
+/// <summary>
+/// 
+/// </summary>
 public sealed record BotSummary
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="result"></param>
     public BotSummary(GetBotResponse.ResultData result)
     {
         IsOnline = result.IsConnectedAndLoggedOn;
@@ -23,10 +30,28 @@ public sealed record BotSummary
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public bool IsFarming { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public bool IsOnline { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public bool IsEnable { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public bool IsLocked { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public string? Nickname { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     public ulong SteamId { get; init; }
 }

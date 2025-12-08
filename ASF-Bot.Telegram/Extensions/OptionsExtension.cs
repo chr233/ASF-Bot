@@ -17,6 +17,7 @@ public static class OptionsExtension
     {
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("config/config.json", optional: true, reloadOnChange: false)
             .AddJsonFile("config.json", optional: true, reloadOnChange: false)
             .AddUserSecrets<Program>()
             .Build();

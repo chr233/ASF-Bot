@@ -6,9 +6,19 @@ namespace ASF_Bot.Service.Telegram.Database;
 
 #pragma warning disable CS8619 // 值中的引用类型的为 Null 性与目标类型不匹配。
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="context"></param>
 public sealed class ChatSettingService(
     ISqlSugarClient context) : BaseRepository<ChatSettings>(context)
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="chatId"></param>
+    /// <param name="threadId"></param>
+    /// <returns></returns>
     public async Task<ChatSettings> GetOrCreateChatSetting(long? chatId, int? threadId)
     {
         var tgChat = await Queryable().FirstAsync(x => x.ChatId == chatId && x.ThreadId == threadId).ConfigureAwait(false);
@@ -22,22 +32,42 @@ public sealed class ChatSettingService(
         return tgChat;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="chatId"></param>
+    /// <param name="threadId"></param>
+    /// <returns></returns>
     public async Task<ChatSettings?> GetChatSetting(long? chatId, int? threadId)
     {
         return await Queryable().FirstAsync(x => x.ChatId == chatId && x.ThreadId == threadId).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="tgChat"></param>
+    /// <returns></returns>
     public Task<int> UpdateSetting(ChatSettings tgChat)
     {
         tgChat.ModifyAt = DateTime.Now;
         return Updateable(tgChat).ExecuteCommandAsync();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public Task<List<ChatSettings>> GetNeedUpdateSettings()
     {
         return Queryable().Where(x => x.IsUpdateTitle).ToListAsync();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="tgChat"></param>
+    /// <returns></returns>
     public Task<int> DeleteSetting(ChatSettings tgChat)
     {
         return Deleteable().Where(x => x.Id == tgChat.Id).ExecuteCommandAsync();

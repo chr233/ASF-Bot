@@ -7,6 +7,11 @@ using Telegram.Bot.Types.Enums;
 
 namespace ASF_Bot.Service.Telegram.Service;
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="_logger"></param>
+/// <param name="_dispatchService"></param>
 public sealed class UpdateService(
     ILogger<UpdateService> _logger,
     DispatchService _dispatchService)

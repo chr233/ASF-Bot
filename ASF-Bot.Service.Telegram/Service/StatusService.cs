@@ -9,6 +9,9 @@ namespace ASF_Bot.Service.Telegram.Service;
 
 public sealed class StatusService
 {
+    /// <summary>
+    /// 
+    /// </summary>
     private readonly ILogger<StatusService> _logger;
     private readonly ITelegramBotClient _botClient;
     private readonly AsfHandler _asfHandler;
@@ -16,6 +19,14 @@ public sealed class StatusService
     private readonly SemaphoreSlim _semaphore;
     private readonly Timer? _timer;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="botClient"></param>
+    /// <param name="options"></param>
+    /// <param name="asfHandler"></param>
+    /// <param name="tgChatService"></param>
     public StatusService(
         ILogger<StatusService> logger,
         ITelegramBotClient botClient,
@@ -36,6 +47,10 @@ public sealed class StatusService
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_"></param>
     public async void UpdateTitle(object? _)
     {
         if (_semaphore.CurrentCount == 0)

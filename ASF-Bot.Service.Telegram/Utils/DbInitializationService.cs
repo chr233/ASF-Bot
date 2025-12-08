@@ -12,14 +12,17 @@ namespace ASF_Bot.Service.Telegram.Utils;
 /// <remarks>
 /// 消息接收服务
 /// </remarks>
-/// <param name="logger"></param>
-/// <param name="options"></param>
-/// <param name="dbClient"></param>
+/// <param name="_logger"></param>
+/// <param name="_options"></param>
+/// <param name="_dbClient"></param>
 public class DbInitializationService(
     ILogger<DbInitializationService> _logger,
     ISqlSugarClient _dbClient,
     IOptions<AppSettings> _options)
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public void InitDatabase()
     {
         if (!_options.Value.Database.Generate)

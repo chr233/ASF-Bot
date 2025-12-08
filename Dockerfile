@@ -1,54 +1,54 @@
 # Dockerfile for ASF-Bot.Telegram
 # Multi-stage build with configurable .NET version via build-arg
 ARG DOTNET_VERSION=10.0
+
 ARG PROJECT_NAME="ASF-Bot.Telegram"
-ARG TARGET_RUNTIME win-arm64
-ARG TARGET_FRAMEWORK
+ARG TARGET_RUNTIME=linux-amd64
+ARG TARGET_FRAMEWORK=net10.0
 
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build
 
-WORKDIR /src
+ARG PROJECT_NAME
+ARG TARGET_RUNTIME
+ARG TARGET_FRAMEWORK
 
-SHELL ["pwsh", "-Command"]
+WORKDIR /src
 
 # Copy solution and project files first to leverage Docker layer cache
 COPY . .
 
-# Build for each runtime and framework
-
-RUN echo "Building project: ${PROJECT_NAME} with .NET version: ${DOTNET_VERSION} ${TARGET_RUNTIME} ${TARGET_FRAMEWORK}" > 1.txt && cat 1.txt
-
-RUN dotnet nuget list source
-
-RUN dotnet restore ${PROJECT_NAME} --disable-parallel --interactive 
-
+SHELL [ "pwsh", "-Command" ]
 
 RUN <<EOF
+    $projectName=${env:PROJECT_NAME}
+    $framework=${env:TARGET_FRAMEWORK}
+    $runtime=${env:TARGET_RUNTIME}
 
+    Write-Host "Building project: $projectName with .NET version: $TARGET_RUNTIME $framework" 
 
+    dotnet publish $projectName --configuration Release --output /publish --runtime $runtime --framework $framework --no-self-contained -p:PublishTrimmed=false -p:ContinuousIntegrationBuild=true -p:UseAppHost=false -p:PublishSingleFile=false --nologo
 
+    New-Item -ItemType Directory -Path "/publish/config"
+    Move-Item -Path "/publish/config.json" -Destination "/publish/config/config.json"
+    
+    Write-Host "Contents of /publish directory:"
+    Get-ChildItem -Path "/publish" -Recurse | ForEach-Object { Write-Host $_.FullName }
+    
 EOF
 
-RUN dotnet publish ${PROJECT_NAME} -c Release -o /publish/ \
-    -r ${TARGET_RUNTIME} -f ${TARGET_FRAMEWORK} --self-contained=true --nologo \
-    -p:PublishTrimmed=false -p:PublishSingleFile=true -p:PublishReadyToRun=false \
-    -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS runtime
 
-ARG PROJECT_NAME
-ARG TARGET_RUNTIME win-arm64
-ARG TARGET_FRAMEWORK
-
-
-RUN echo "Building project: ${PROJECT_NAME} with .NET version: ${DOTNET_VERSION} ${TARGET_RUNTIME} ${TARGET_FRAMEWORK}" TZ ${TZ} > 1.txt && cat 1.txt
-
 WORKDIR /app
 
 # Copy the published files from the build stage
-COPY --from=build /publish/* ./
+COPY --from=build /publish/ ./
 
 ENV DOTNET_RUNNING_IN_CONTAINER=true
-ENTRYPOINT ["./ASF-Bot.Telegram"]
+
+VOLUME ["/app/config", "/app/logs"]
+HEALTHCHECK CMD ["pidof", "-q", "dotnet"]
+
+ENTRYPOINT ["dotnet","./ASF-Bot.Telegram.dll"]

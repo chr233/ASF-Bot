@@ -11,22 +11,43 @@ namespace ASF_Bot.Model.Models;
 [SugarIndex("i_tg_chats", nameof(ChatId), OrderByType.Asc, nameof(ThreadId), OrderByType.Asc, true)]
 public sealed record ChatSettings : BaseModel, IModifyAt, ICreateAt
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
     public int Id { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [SugarColumn(IsNullable = true)]
     public long? ChatId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [SugarColumn(IsNullable = true)]
     public int? ThreadId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [SugarColumn(IsNullable = true, Length = 100)]
     public int? IpcId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public bool IsUpdateTitle { get; set; } = false;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public bool IsTopidEnable { get; set; } = false;
 
+    /// <summary>
+    /// 
+    /// </summary>
     [SugarColumn(IsNullable = true, Length = 200)]
     public string? Title { get; set; }
 

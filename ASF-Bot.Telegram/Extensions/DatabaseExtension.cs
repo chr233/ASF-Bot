@@ -9,7 +9,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SteamToolProfileSpider.Server.Extensions;
 
-
 /// <summary>
 /// 数据库扩展
 /// </summary>

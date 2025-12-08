@@ -8,6 +8,9 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace ASF_Bot.Service.Telegram.Handler;
+/// <summary>
+/// 
+/// </summary>
 public class MessageHandler
 {
     private readonly ILogger<MessageHandler> _logger;
@@ -19,6 +22,14 @@ public class MessageHandler
     private readonly Timer _timer;
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="botClient"></param>
+    /// <param name="asfHandler"></param>
+    /// <param name="chatSettingService"></param>
+    /// <param name="chatMessageService"></param>
     public MessageHandler(
         ILogger<MessageHandler> logger,
         ITelegramBotClient botClient,
@@ -35,6 +46,13 @@ public class MessageHandler
         _timer = new Timer(UpdateTitle, null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(15));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="isGroup"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
     public async Task HandlerTextMessage(Message message, bool isGroup, CancellationToken cancellation)
     {
         if (string.IsNullOrEmpty(message.Text))
@@ -88,6 +106,10 @@ public class MessageHandler
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_"></param>
     public async void UpdateTitle(object? _)
     {
         if (_semaphore.CurrentCount == 0)
