@@ -3,39 +3,58 @@
 ARG DOTNET_VERSION=10.0
 
 ARG PROJECT_NAME="ASF-Bot.Telegram"
-ARG TARGET_RUNTIME=linux-amd64
-ARG TARGET_FRAMEWORK=net10.0
+ARG TARGET_FRAMEWORK="net10.0"
 
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build
 
 ARG PROJECT_NAME
-ARG TARGET_RUNTIME
+ARG TARGETARCH
+ARG TARGETOS
 ARG TARGET_FRAMEWORK
+ARG CONFIGURATION=Release
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=true
+ENV DOTNET_NOLOGO=true
 
 WORKDIR /src
 
 # Copy solution and project files first to leverage Docker layer cache
 COPY . .
 
-SHELL [ "pwsh", "-Command" ]
-
 RUN <<EOF
-    $projectName=${env:PROJECT_NAME}
-    $framework=${env:TARGET_FRAMEWORK}
-    $runtime=${env:TARGET_RUNTIME}
+    set -eu
 
-    Write-Host "Building project: $projectName with .NET version: $TARGET_RUNTIME $framework" 
 
-    dotnet publish $projectName --configuration Release --output /publish --runtime $runtime --framework $framework --no-self-contained -p:PublishTrimmed=false -p:ContinuousIntegrationBuild=true -p:UseAppHost=false -p:PublishSingleFile=false --nologo
+    case "$TARGETOS" in
+        "linux") ;;
+        *) echo "ERROR: Unsupported OS: ${TARGETOS}"; exit 1 ;;
+    esac
 
-    New-Item -ItemType Directory -Path "/publish/config"
-    Move-Item -Path "/publish/config.json" -Destination "/publish/config/config.json"
+    case "$TARGETARCH" in
+        "amd64") framework="${TARGETOS}-x64" ;;
+        "arm") framework="${TARGETOS}-${TARGETARCH}" ;;
+        "arm64") framework="${TARGETOS}-${TARGETARCH}" ;;
+        *) echo "ERROR: Unsupported CPU architecture: ${TARGETARCH}"; exit 1 ;;
+    esac
+
+    echo "Building for framework: $framework"
+
+    echo "dotnet publish $PROJECT_NAME -c \"$CONFIGURATION\" -o \"/publish\" -p:UseAppHost=false -r \"$framework\" -f \"$TARGET_FRAMEWORK\" -p:ContinuousIntegrationBuild=true -p:PublishSingleFile=false -p:PublishTrimmed=false --nologo --no-self-contained"
+
+    dotnet --info
+
+    dotnet publish $PROJECT_NAME -c "$CONFIGURATION" -o "/publish" -r "$framework" -f "$TARGET_FRAMEWORK" -p:ContinuousIntegrationBuild=true -p:PublishSingleFile=false -p:PublishTrimmed=false -p:UseAppHost=false --nologo --no-self-contained
+
+    mkdir /publish/config
+    mv /publish/config.json /publish/config/config.json
 EOF
 
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS runtime
+
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=true
+ENV DOTNET_NOLOGO=true
 
 WORKDIR /app
 
