@@ -105,7 +105,7 @@ jobs:
           name: ${{ env.PROJECT_NAME }} ${{ github.ref_name }}
           body: |
             # 更新说明
-            ![ASF.Bot Release](https://img.shields.io/badge/ASF-Bot-${{ github.ref_name }}-brightgreen) ![Downloads](https://img.shields.io/github/downloads/chr233/ASF-Bot.Telegram/${{ github.ref_name }}/total?label=Downloads)
+            ![Release](https://img.shields.io/badge/ASF_Bot.Telegram-${{ github.ref_name }}-brightgreen) ![Downloads](https://img.shields.io/github/downloads/chr233/ASF-Bot/${{ github.ref_name }}/total?label=Downloads)
 
             release created by github actions
 
