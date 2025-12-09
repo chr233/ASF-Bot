@@ -24,7 +24,6 @@ COPY . .
 RUN <<EOF
     set -eu
 
-
     case "$TARGETOS" in
         "linux") ;;
         *) echo "ERROR: Unsupported OS: ${TARGETOS}"; exit 1 ;;
@@ -40,6 +39,18 @@ RUN <<EOF
     echo "Building for framework: $framework"
 
     echo "dotnet publish $PROJECT_NAME -c \"$CONFIGURATION\" -o \"/publish\" -p:UseAppHost=false -r \"$framework\" -f \"$TARGET_FRAMEWORK\" -p:ContinuousIntegrationBuild=true -p:PublishSingleFile=false -p:PublishTrimmed=false --nologo --no-self-contained"
+
+    echo "Testing connection to nuget mirror..."
+    if curl -s --connect-timeout 10 --max-time 30 https://repo.huaweicloud.com/repository/nuget/v3/index.json > /dev/null 2>&1; then
+        echo "Test passed, nuget mirror is accessible"
+        if [ -f "Nuget.config.bak" ]; then
+            mv "Nuget.config.bak" "Nuget.config"
+        else
+            echo "WARNING: Nuget.config.bak not found"
+        fi
+    else
+        echo "Test failed, use api.nuget.org instead"
+    fi
 
     dotnet --info
 
