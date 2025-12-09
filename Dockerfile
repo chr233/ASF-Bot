@@ -1,9 +1,9 @@
 # Dockerfile for ASF-Bot.Telegram
 # Multi-stage build with configurable .NET version via build-arg
-ARG DOTNET_VERSION=8.0
+ARG DOTNET_VERSION=10.0
 
 ARG PROJECT_NAME="ASF-Bot.Telegram"
-ARG TARGET_FRAMEWORK="net8.0"
+ARG TARGET_FRAMEWORK="net10.0"
 
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build
