@@ -31,10 +31,6 @@ RUN <<EOF
 
     New-Item -ItemType Directory -Path "/publish/config"
     Move-Item -Path "/publish/config.json" -Destination "/publish/config/config.json"
-    
-    Write-Host "Contents of /publish directory:"
-    Get-ChildItem -Path "/publish" -Recurse | ForEach-Object { Write-Host $_.FullName }
-    
 EOF
 
 
