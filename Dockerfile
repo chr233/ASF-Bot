@@ -44,6 +44,11 @@ RUN <<EOF
 
     dotnet publish $PROJECT_NAME -c "$CONFIGURATION" -o "/publish" -r "$framework" -f "$TARGET_FRAMEWORK" -p:ContinuousIntegrationBuild=true -p:PublishSingleFile=false -p:PublishTrimmed=false -p:UseAppHost=false --nologo --no-self-contained
 
+    if [ -f /publish/config.json ]; then
+        sed -i 's/"DbName": "data"/"DbName": "config\/data"/g' /publish/config.json
+        echo "Modified DbName in config.json"
+    fi
+
     mkdir /publish/config
     mv /publish/config.json /publish/config/config.json
 EOF
