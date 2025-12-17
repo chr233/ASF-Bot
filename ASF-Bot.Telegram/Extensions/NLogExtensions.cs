@@ -19,7 +19,7 @@ public static class NLogExtensions
     /// <param name="services"></param>
     public static void AddNlog(this IServiceCollection services)
     {
-        var path = Path.Combine(BuildInfo.AppDir, "nlog.config");
+        var path = Path.Combine(BuildInfo.AppDir, "config", "nlog.config");
         if (File.Exists(path))
         {
             services.AddLogging(loggingBuilder => {
@@ -27,8 +27,10 @@ public static class NLogExtensions
 #if !DEBUG
                 loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Debug);
 #endif
-                loggingBuilder.AddNLog("nlog.config");
+                loggingBuilder.AddNLog("config/nlog.config");
             });
+
+            return;
         }
         else
         {
@@ -70,8 +72,9 @@ public static class NLogExtensions
             config.AddRuleForAllLevels(consoleTarget);
 
             // 添加过滤器以排除指定的 logger
-            var loggerNameToExclude = "System.Net.Http.*"; // 替换为你想排除的 logger 名称
-            config.LoggingRules.Add(new LoggingRule(loggerNameToExclude, NLog.LogLevel.Error, consoleTarget));
+            config.LoggingRules.Add(new LoggingRule("Microsoft.*", NLog.LogLevel.Warn, consoleTarget));
+            config.LoggingRules.Add(new LoggingRule("Microsoft.Hosting.Lifetime", NLog.LogLevel.Warn, consoleTarget));
+            config.LoggingRules.Add(new LoggingRule("System.*", NLog.LogLevel.Warn, consoleTarget));
 
             LogManager.Configuration = config;
 

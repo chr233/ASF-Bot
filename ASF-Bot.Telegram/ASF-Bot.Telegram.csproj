@@ -26,10 +26,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="config.json">
+		<None Update="config\config.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="nlog.config">
+		<None Update="config\nlog.config">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
