@@ -18,6 +18,8 @@
 
 ## 配置文件
 
+> 配置文件位置 config/config.json
+
 ```json
 {
   "System": {

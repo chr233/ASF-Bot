@@ -48,9 +48,6 @@ RUN <<EOF
         sed -i 's/"DbName": "data"/"DbName": "config\/data"/g' /publish/config.json
         echo "Modified DbName in config.json"
     fi
-
-    mkdir /publish/config
-    mv /publish/config.json /publish/config/config.json
 EOF
 
 
