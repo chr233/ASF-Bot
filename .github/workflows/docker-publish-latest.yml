@@ -1,4 +1,4 @@
-name: ASF-docker-publish-latest
+name: docker-publish-latest
 
 on:
   release:

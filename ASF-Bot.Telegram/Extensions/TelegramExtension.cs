@@ -24,8 +24,6 @@ public static class TelegramExtension
 
             var config = serviceProvider.GetRequiredService<IOptions<AppSettings>>().Value?.Telegram;
 
-            _logger.Warn(serviceProvider.GetRequiredService<IOptions<AppSettings>>().Value.ToString());
-
             var token = config?.BotToken;
 
             if (string.IsNullOrEmpty(token))

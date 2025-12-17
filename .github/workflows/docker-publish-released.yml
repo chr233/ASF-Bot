@@ -1,4 +1,4 @@
-name: ASF-docker-publish-released
+name: docker-publish-released
 
 on:
   push:
