@@ -13,7 +13,8 @@ foreach ($runtime in $runtimes) {
 
     $outputDir = "./dist/$buildName"
 
-    dotnet publish $projectName --output "$outputDir" --runtime $runtime --framework $framework --configuration $config --self-contained --no-restore --nologo -p:PublishTrimmed=$enableTrim -p:TrimMode=$trimMode -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
+    dotnet publish $projectName --output "$outputDir-fde" --runtime $runtime --framework $framework --configuration $config --self-contained --no-restore --nologo -p:PublishTrimmed=$enableTrim -p:TrimMode=$trimMode -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
+
     dotnet publish $projectName --output "$outputDir" --runtime $runtime --framework $framework --configuration $config --no-self-contained --no-restore --nologo -p:PublishTrimmed=$enableTrim -p:TrimMode=$trimMode -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
 
     Remove-Item "$outputDir-fde/*.xml"
@@ -21,11 +22,7 @@ foreach ($runtime in $runtimes) {
 
     if ($true -eq $zip) {
         Write-Debug "Creating zip archive for $buildName"
-        7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName-fde.zip" "./tmp/$buildName-fde/*"
-        7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName.zip" "./tmp/$buildName/*"
+        7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName-fde.zip" "./dist/$buildName-fde/*"
+        7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName.zip" "./dist/$buildName/*"
     }
-}
-
-if ($true -eq $zip) {
-    Remove-Item -Recurse -Force "./tmp"
 }

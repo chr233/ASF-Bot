@@ -1,6 +1,6 @@
 <Project>
 	<PropertyGroup>
-		<Version>1.0.2.0</Version>
+		<Version>1.0.2.1</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -38,14 +38,6 @@
 		<DebugType>portable</DebugType>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<PublishTrimmed>true</PublishTrimmed>
-		<TrimMode>full</TrimMode>
-		<PublishReadyToRun>true</PublishReadyToRun>
-		<PublishSingleFile>true</PublishSingleFile>
-		<SelfContained>true</SelfContained>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">

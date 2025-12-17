@@ -58,7 +58,7 @@ jobs:
             Remove-Item "$outputDir-fde/*.xml"
             Remove-Item "$outputDir/*.xml"
 
-            7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName-fde.zip" "$outputDir/*"
+            7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName-fde.zip" "$outputDir-fde/*"
             7z a -bd -slp -tzip -mm=Deflate -mx=5 -mfb=150 -mpass=10 "./dist/$buildName.zip" "$outputDir/*"
           }
 
