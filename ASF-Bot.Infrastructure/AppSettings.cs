@@ -14,7 +14,7 @@ public sealed record AppSettings
     public DatabaseConfig Database { get; set; } = new();
 
     /// <inheritdoc cref="TelegramConfig"/>
-    public TelegramConfig? Telegram { get; set; }
+    public TelegramConfig Telegram { get; set; } = new();
 
     /// <inheritdoc cref="IpcConfig"/>
     public List<IpcConfig> AsfIpcs { get; set; } = [];

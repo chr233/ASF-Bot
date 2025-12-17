@@ -9,11 +9,9 @@ public sealed record SystemConfig
 
     public bool Statistic { get; set; } = true;
 
-    public bool LogFile { get; set; } = false;
-
     /// <summary>
     /// 更新ASF状态间隔, 单位: 秒, 设为 0 禁用
     /// </summary>
-    public int UpdateStatusInterval { get; set; } =10;
+    public int UpdateStatusInterval { get; set; } = 10;
     public int UpdateTitleInterval { get; set; } = 10;
 }

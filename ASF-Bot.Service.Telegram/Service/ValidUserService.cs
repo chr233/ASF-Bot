@@ -5,6 +5,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace ASF_Bot.Service.Telegram.Service;
+
 public sealed class ValidUserService
 {
     private readonly ILogger<UpdateService> _logger;
@@ -18,7 +19,17 @@ public sealed class ValidUserService
 
         if (_options.Value.Telegram?.AdminUsers != null)
         {
-            AdminUsers.UnionWith(_options.Value.Telegram.AdminUsers);
+            foreach (var userId in _options.Value.Telegram.AdminUsers)
+            {
+                if (long.TryParse(userId, out var id))
+                {
+                    AdminUsers.Add(id);
+                }
+                else
+                {
+                    _logger.LogWarning("管理员用户ID无效: {userId}", userId);
+                }
+            }
         }
 
         if (AdminUsers.Count == 0)
@@ -60,7 +71,7 @@ public sealed class ValidUserService
 
     public bool ValidUser(User? user)
     {
-        if(user== null)
+        if (user == null)
         {
             return false;
         }

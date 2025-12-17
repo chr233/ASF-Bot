@@ -15,12 +15,18 @@ public static class OptionsExtension
     /// <param name="builder"></param>
     public static void AddCustomOptions(this IServiceCollection builder)
     {
+        var relativePath = Path.Combine("config", "config.json");
+
+        // 优先使用 BuildInfo.AppDir（如果可用），否则使用运行时目录
+        var baseDir = !string.IsNullOrWhiteSpace(BuildInfo.AppDir) ? BuildInfo.AppDir : AppContext.BaseDirectory;
+
         var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("config/config.json", optional: true, reloadOnChange: false)
+            .SetBasePath(baseDir)
+            .AddJsonFile(relativePath, optional: true, reloadOnChange: false)
             .AddUserSecrets<Program>()
             .Build();
 
+        // 注册 IConfiguration 与绑定 AppSettings
         builder.AddSingleton<IConfiguration>(config);
         builder.Configure<AppSettings>(config);
     }

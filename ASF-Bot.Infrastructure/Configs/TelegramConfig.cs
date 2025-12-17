@@ -5,9 +5,9 @@ namespace ASF_Bot.Infrastructure.Configs;
 /// </summary>
 public sealed record TelegramConfig
 {
-    public string? BotToken { get; init; }
-    public string? Proxy { get; init; }
-    public string? BaseUrl { get; init; }
-    public bool DropPendingUpdates { get; init; }
-    public List<long>? AdminUsers { get; init; }
+    public string? BotToken { get; set; }
+    public string? Proxy { get; set; }
+    public string? BaseUrl { get; set; }
+    public bool DropPendingUpdates { get; set; }
+    public List<string>? AdminUsers { get; set; }
 }

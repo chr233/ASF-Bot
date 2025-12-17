@@ -53,6 +53,7 @@ jobs:
             $outputDir = "./tmp/$buildName"
 
             dotnet publish $projectName --output "$outputDir-fde" --self-contained --runtime $runtime --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=false -p:PublishReadyToRun=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
+            
             dotnet publish $projectName --output "$outputDir" --no-self-contained --runtime $runtime --framework $framework --configuration $config --no-restore --nologo -p:PublishTrimmed=false -p:PublishReadyToRun=false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:ContinuousIntegrationBuild=true -p:UseAppHost=true
 
             Remove-Item "$outputDir-fde/*.xml"

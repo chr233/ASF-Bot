@@ -1,6 +1,6 @@
 
 $runtimes = "linux-x64", "linux-arm64", "win-x64", "win-arm64"
-$framework = "net10.0"
+$framework = "net9.0"
 $config = "Release"
 $projectName = "ASF-Bot.Telegram"
 $enableTrim = $true
