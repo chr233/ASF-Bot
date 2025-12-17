@@ -19,6 +19,8 @@
 ## 配置文件
 
 > 配置文件位置 config/config.json
+>
+> 如果不需要文件日志, 可以删除 config/nlog.config
 
 ```json
 {
