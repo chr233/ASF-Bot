@@ -21,34 +21,12 @@ WORKDIR /src
 # Copy solution and project files first to leverage Docker layer cache
 COPY . .
 
-RUN <<EOF
-    set -eu
-
-    case "$TARGETOS" in
-        "linux") ;;
-        *) echo "ERROR: Unsupported OS: ${TARGETOS}"; exit 1 ;;
-    esac
-
-    case "$TARGETARCH" in
-        "amd64") framework="${TARGETOS}-x64" ;;
-        "arm") framework="${TARGETOS}-${TARGETARCH}" ;;
-        "arm64") framework="${TARGETOS}-${TARGETARCH}" ;;
-        *) echo "ERROR: Unsupported CPU architecture: ${TARGETARCH}"; exit 1 ;;
-    esac
-
-    echo "Building for framework: $framework"
-
-    echo "dotnet publish $PROJECT_NAME -c \"$CONFIGURATION\" -o \"/publish\" -p:UseAppHost=false -r \"$framework\" -f \"$TARGET_FRAMEWORK\" -p:ContinuousIntegrationBuild=true -p:PublishSingleFile=false -p:PublishTrimmed=false --nologo --no-self-contained"
-
-    dotnet --info
-
-    dotnet publish $PROJECT_NAME -c "$CONFIGURATION" -o "/publish" -r "$framework" -f "$TARGET_FRAMEWORK" -p:ContinuousIntegrationBuild=true -p:PublishSingleFile=false -p:PublishTrimmed=false -p:UseAppHost=false --nologo --no-self-contained
-
-    if [ -f /publish/config.json ]; then
-        sed -i 's/"DbName": "data"/"DbName": "config\/data"/g' /publish/config.json
-        echo "Modified DbName in config.json"
-    fi
-EOF
+RUN pwsh -NoProfile -File ./docker-build.ps1 \
+    -TargetOS "$TARGETOS" \
+    -TargetArch "$TARGETARCH" \
+    -Configuration "$CONFIGURATION" \
+    -ProjectName "$PROJECT_NAME" \
+    -TargetFramework "$TARGET_FRAMEWORK" 
 
 
 # Runtime stage
