@@ -9,6 +9,7 @@ env:
   TAG: latest
 
 permissions:
+  contents: read
   packages: write
 
 jobs:
