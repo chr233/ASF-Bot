@@ -21,12 +21,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.1
         with:
           submodules: recursive
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v5.0.0
+        uses: actions/setup-dotnet@v5.1.0
         with:
           dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
 
@@ -65,7 +65,7 @@ jobs:
 
       - name: Upload ${{ env.PROJECT_NAME }} via ${{ matrix.framework }}
         continue-on-error: true
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: ${{ matrix.framework }}-Build-Artifacts
           path: ./dist/*.zip
@@ -76,22 +76,22 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5.0.1
+        uses: actions/checkout@v6.0.1
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v5.0.0
+        uses: actions/download-artifact@v7.0.0
         with:
           name: net8.0-Build-Artifacts
           path: out
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v5.0.0
+        uses: actions/download-artifact@v7.0.0
         with:
           name: net9.0-Build-Artifacts
           path: out
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v5.0.0
+        uses: actions/download-artifact@v7.0.0
         with:
           name: net10.0-Build-Artifacts
           path: out
