@@ -23,7 +23,7 @@ public static class BotClientExtension
     /// <param name="linkPreviewOptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<Message> AutoReply(
+    public static async Task<Message> AutoReply(
         this ITelegramBotClient botClient,
         string text,
         Message message,
@@ -32,7 +32,7 @@ public static class BotClientExtension
         LinkPreviewOptions? linkPreviewOptions = null,
         CancellationToken cancellationToken = default)
     {
-        return botClient.SendMessage(message.Chat, text, parseMode: parsemode, replyParameters: new ReplyParameters { MessageId = message.MessageId, ChatId = message.Chat, AllowSendingWithoutReply = true }, replyMarkup, linkPreviewOptions, message.MessageThreadId, cancellationToken: cancellationToken);
+        return await botClient.SendMessage(message.Chat, text, parseMode: parsemode, replyParameters: new ReplyParameters { MessageId = message.MessageId, ChatId = message.Chat, AllowSendingWithoutReply = true }, replyMarkup, linkPreviewOptions, message.MessageThreadId, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -44,14 +44,14 @@ public static class BotClientExtension
     /// <param name="showAlert"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task AutoReply(
+    public static async Task AutoReply(
         this ITelegramBotClient botClient,
         string text,
         CallbackQuery query,
         bool showAlert = false,
         CancellationToken cancellationToken = default)
     {
-        return botClient.AnswerCallbackQuery(query.Id, text, showAlert: showAlert, cancellationToken: cancellationToken);
+        await botClient.AnswerCallbackQuery(query.Id, text, showAlert: showAlert, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -62,13 +62,13 @@ public static class BotClientExtension
     /// <param name="replyMarkup"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<Message> EditMessageReplyMarkup(
+    public static async Task<Message> EditMessageReplyMarkup(
         this ITelegramBotClient botClient,
         Message message,
         InlineKeyboardMarkup? replyMarkup = default,
         CancellationToken cancellationToken = default)
     {
-        return botClient.EditMessageReplyMarkup(message.Chat, message.MessageId, replyMarkup, cancellationToken: cancellationToken);
+        return await botClient.EditMessageReplyMarkup(message.Chat, message.MessageId, replyMarkup, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -78,12 +78,12 @@ public static class BotClientExtension
     /// <param name="message"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<Message> RemoveMessageReplyMarkup(
+    public static async Task<Message> RemoveMessageReplyMarkup(
         this ITelegramBotClient botClient,
         Message message,
         CancellationToken cancellationToken = default)
     {
-        return botClient.EditMessageReplyMarkup(message.Chat, message.MessageId, null, cancellationToken: cancellationToken);
+        return await botClient.EditMessageReplyMarkup(message.Chat, message.MessageId, null, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -97,7 +97,7 @@ public static class BotClientExtension
     /// <param name="linkPreviewOptions"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<Message> EditMessageText(
+    public static async Task<Message> EditMessageText(
         this ITelegramBotClient botClient,
         Message message,
         string text,
@@ -107,7 +107,7 @@ public static class BotClientExtension
 
         CancellationToken cancellationToken = default)
     {
-        return botClient.EditMessageText(message.Chat, message.MessageId, text, parseMode: parseMode, linkPreviewOptions: linkPreviewOptions, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
+        return await botClient.EditMessageText(message.Chat, message.MessageId, text, parseMode: parseMode, linkPreviewOptions: linkPreviewOptions, replyMarkup: replyMarkup, cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -119,7 +119,7 @@ public static class BotClientExtension
     /// <param name="businessConnectionId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task SendChatAction(
+    public static async Task SendChatAction(
         this ITelegramBotClient botClient,
         Message message,
         ChatAction chatAction,
@@ -128,12 +128,11 @@ public static class BotClientExtension
     {
         try
         {
-            return botClient.SendChatAction(message.Chat, chatAction, message.MessageThreadId, businessConnectionId, cancellationToken);
+            await botClient.SendChatAction(message.Chat, chatAction, message.MessageThreadId, businessConnectionId, cancellationToken).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "SendChatAction出错");
-            return Task.CompletedTask;
         }
     }
 }

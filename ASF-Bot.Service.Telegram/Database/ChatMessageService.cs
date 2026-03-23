@@ -16,13 +16,19 @@ public sealed class ChatMessageService(
         return msg;
     }
 
-    public Task<List<ChatMessages>> GetExpiredMessages()
+    public async Task<List<ChatMessages>> GetExpiredMessages()
     {
-        return Queryable().Where(x => x.ExpiredAt < DateTime.Now).ToListAsync();
+        return await Queryable()
+            .Where(static x => x.ExpiredAt < DateTime.Now)
+            .ToListAsync()
+            .ConfigureAwait(false);
     }
 
-    public Task<int> DeletMessage(ChatMessages msg)
+    public async Task<int> DeletMessage(ChatMessages msg)
     {
-        return Deleteable().Where(x => x.ChatId == msg.ChatId && x.MessageId == msg.MessageId).ExecuteCommandAsync();
+        return await Deleteable()
+            .Where(x => x.ChatId == msg.ChatId && x.MessageId == msg.MessageId)
+            .ExecuteCommandAsync()
+            .ConfigureAwait(false);
     }
 }

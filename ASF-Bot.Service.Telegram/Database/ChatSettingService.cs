@@ -28,7 +28,9 @@ public sealed class ChatSettingService(
         }
 
         tgChat = new ChatSettings { ChatId = chatId, ThreadId = threadId, CreateAt = DateTime.Now };
-        tgChat = await Insertable(tgChat).ExecuteReturnEntityAsync().ConfigureAwait(false);
+        tgChat = await Insertable(tgChat)
+            .ExecuteReturnEntityAsync()
+            .ConfigureAwait(false);
         return tgChat;
     }
 
@@ -40,7 +42,9 @@ public sealed class ChatSettingService(
     /// <returns></returns>
     public async Task<ChatSettings?> GetChatSetting(long? chatId, int? threadId)
     {
-        return await Queryable().FirstAsync(x => x.ChatId == chatId && x.ThreadId == threadId).ConfigureAwait(false);
+        return await Queryable()
+            .FirstAsync(x => x.ChatId == chatId && x.ThreadId == threadId)
+            .ConfigureAwait(false);
     }
 
     /// <summary>
@@ -48,19 +52,24 @@ public sealed class ChatSettingService(
     /// </summary>
     /// <param name="tgChat"></param>
     /// <returns></returns>
-    public Task<int> UpdateSetting(ChatSettings tgChat)
+    public async Task<int> UpdateSetting(ChatSettings tgChat)
     {
         tgChat.ModifyAt = DateTime.Now;
-        return Updateable(tgChat).ExecuteCommandAsync();
+        return await Updateable(tgChat)
+            .ExecuteCommandAsync()
+            .ConfigureAwait(false);
     }
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    public Task<List<ChatSettings>> GetNeedUpdateSettings()
+    public async Task<List<ChatSettings>> GetNeedUpdateSettings()
     {
-        return Queryable().Where(x => x.IsUpdateTitle).ToListAsync();
+        return await Queryable()
+            .Where(x => x.IsUpdateTitle)
+            .ToListAsync()
+            .ConfigureAwait(false);
     }
 
     /// <summary>
@@ -68,8 +77,11 @@ public sealed class ChatSettingService(
     /// </summary>
     /// <param name="tgChat"></param>
     /// <returns></returns>
-    public Task<int> DeleteSetting(ChatSettings tgChat)
+    public async Task<int> DeleteSetting(ChatSettings tgChat)
     {
-        return Deleteable().Where(x => x.Id == tgChat.Id).ExecuteCommandAsync();
+        return await Deleteable()
+            .Where(x => x.Id == tgChat.Id)
+            .ExecuteCommandAsync()
+            .ConfigureAwait(false);
     }
 }

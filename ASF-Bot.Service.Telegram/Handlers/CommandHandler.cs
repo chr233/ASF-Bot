@@ -100,6 +100,7 @@ public class CommandHandler(
             "SET_COMMAND" => SetCommand(message, cancellation),
             "CLEAR_COMMAND" => ClearCommand(message, cancellation),
             "SHOW_LOG" => ShowLog(message, cancellation),
+            "HELP" => Help(message, cancellation),
             _ => null
         };
     }
@@ -113,7 +114,8 @@ public class CommandHandler(
         { "/disable_status", "在当前会话禁用 IPC 状态实时更新" },
         { "/set_command", "设置命令提示" },
         { "/clear_command", "清除命令提示" },
-        { "/show_log", "显示日志" },
+        { "/show_log", "显示 IPC 日志" },
+        { "/help", "显示帮助" },
     }.ToFrozenDictionary();
 
 #if DEBUG
@@ -125,7 +127,7 @@ public class CommandHandler(
     /// <returns></returns>
     public async Task Test(Message message, CancellationToken cancellation)
     {
-        await _botClient.LeaveChat(-1002327007359);
+        await _botClient.LeaveChat(-1002327007359).ConfigureAwait(false);
     }
 #endif
 
@@ -135,10 +137,10 @@ public class CommandHandler(
     /// <param name="message"></param>
     /// <param name="cancellation"></param>
     /// <returns></returns>
-    public Task Start(Message message, CancellationToken cancellation)
+    public async Task Start(Message message, CancellationToken cancellation)
     {
-        var msg = $"欢迎使用 ASF-Bot 机器人";
-        return _botClient.AutoReply(msg, message, cancellationToken: cancellation);
+        var msg = $"欢迎使用 ASF-Bot 机器人, 设置机器人命令 /set_command , 显示帮助 /help , 查看机器人版本 /version";
+        await _botClient.AutoReply(msg, message, cancellationToken: cancellation).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -147,24 +149,42 @@ public class CommandHandler(
     /// <param name="message"></param>
     /// <param name="cancellation"></param>
     /// <returns></returns>
-    public Task Version(Message message, CancellationToken cancellation)
+    public async Task Version(Message message, CancellationToken cancellation)
     {
         var sb = new StringBuilder();
         sb.AppendFormat("版本: {0}\r\n", BuildInfo.Version);
         sb.AppendFormat("框架: {0}\r\n", BuildInfo.FrameworkName);
         sb.AppendFormat("版权: {0}\r\n", BuildInfo.Copyright);
 
-        return _botClient.AutoReply(sb.ToString(), message, cancellationToken: cancellation);
+        await _botClient.AutoReply(sb.ToString(), message, cancellationToken: cancellation).ConfigureAwait(false);
     }
 
-    public Task Message(Message message, CancellationToken cancellation)
+    /// <summary>
+    /// 获取消息信息
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
+    public async Task Message(Message message, CancellationToken cancellation)
     {
         var sb = new StringBuilder();
         sb.AppendFormat("Chat: {0}\r\n", message.Chat.FullChatID());
         sb.AppendFormat("Thread: {0}\r\n", message.MessageThreadId);
         sb.AppendFormat("From: {0}\r\n", message.From?.FullName());
         sb.AppendFormat("Text: {0}\r\n", message.Text);
-        return _botClient.AutoReply(sb.ToString(), message, cancellationToken: cancellation);
+        await _botClient.AutoReply(sb.ToString(), message, cancellationToken: cancellation).ConfigureAwait(false);
+    }
+
+    public async Task Help(Message message, CancellationToken cancellation)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("命令列表:");
+        foreach (var (cmd, desc) in _commandDict)
+        {
+            sb.AppendFormat("{0} - {1}\r\n", cmd, desc);
+        }
+
+        await _botClient.AutoReply(sb.ToString(), message, cancellationToken: cancellation).ConfigureAwait(false);
     }
 
     public async Task SetCommand(Message message, CancellationToken cancellation)
@@ -362,6 +382,12 @@ public class CommandHandler(
         return;
     }
 
+    /// <summary>
+    /// 显示日志
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
     public async Task ShowLog(Message message, CancellationToken cancellation)
     {
         var setting = await _tgChatService.GetOrCreateChatSetting(message.Chat.Id, message.MessageThreadId).ConfigureAwait(false);

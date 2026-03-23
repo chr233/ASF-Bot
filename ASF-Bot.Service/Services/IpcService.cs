@@ -197,16 +197,16 @@ public sealed class IpcService(
         return SendToJsonObject<CommandResponse>(request);
     }
 
-    public Task<GetBotResponse?> GetBots(string botNames)
+    public async Task<GetBotResponse?> GetBots(string botNames)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, $"{_prefix}/Bot/{botNames}");
-        return SendToJsonObject<GetBotResponse>(request);
+        return await SendToJsonObject<GetBotResponse>(request);
     }
 
-    public Task<GetLogResponse?> GetAsfLog(int count)
+    public async Task<GetLogResponse?> GetAsfLog(int count)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, $"{_prefix}/NLog/File?count={count}");
-        return SendToJsonObject<GetLogResponse>(request);
+        return await SendToJsonObject<GetLogResponse>(request);
     }
 
     public void Dispose()

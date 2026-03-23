@@ -14,7 +14,7 @@
 
 [![爱发电](https://img.shields.io/badge/爱发电-chr__-ea4aaa.svg?logo=github-sponsors)](https://afdian.net/@chr233)
 
-## 支持多 IPC 管理的 ASF 机器人
+> 支持多 IPC 管理的 ASF 机器人
 
 ## 配置文件
 
@@ -63,3 +63,21 @@
   ]
 }
 ```
+
+## 命令列表
+
+| 命令              | 缩写    | 说明                            |
+| ----------------- | ------- | ------------------------------- |
+| `/start`          |         | 显示欢迎消息                    |
+| `/version`        |         | 查看版本                        |
+| `/message`        |         | 查看消息详细信息                |
+| `/ipc_menu`       | `/ipc`  | 选择激活的 IPC                  |
+| `/next_ipc`       | `/next` | 激活下一个 IPC                  |
+| `/prev_ipc`       | `/prev` | 激活上一个 IPC                  |
+| `/all_ipc`        | `/all`  | 激活全部 IPC                    |
+| `/enable_status`  |         | 在当前会话启用 IPC 状态实时更新 |
+| `/disable_status` |         | 在当前会话禁用 IPC 状态实时更新 |
+| `/set_command`    |         | 设置命令提示                    |
+| `/clear_command`  |         | 清除命令提示                    |
+| `/show_log`       |         | 显示 IPC 日志                   |
+| `/help`           |         | 显示帮助                        |
