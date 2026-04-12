@@ -19,7 +19,7 @@
     <PackageVersion Include="SteamKit2" Version="3.4.0" />
     <PackageVersion Include="System.Private.Uri" Version="4.3.2" />
     <PackageVersion Include="System.Text.Json" Version="8.0.1" />
-    <PackageVersion Include="Telegram.Bot" Version="22.9.5.3" />
+    <PackageVersion Include="Telegram.Bot" Version="22.9.6" />
     <PackageVersion Include="SqlSugar.IOC" Version="2.0.0" />
     <PackageVersion Include="SqlSugarCore" Version="5.1.4.214" />
   </ItemGroup>
