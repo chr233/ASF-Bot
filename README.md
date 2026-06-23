@@ -16,6 +16,23 @@
 
 > 支持多 IPC 管理的 ASF 机器人
 
+## Docker compose
+
+```yaml
+version: "3.8"
+
+services:
+  asf-bot:
+    image: ghcr.io/chr233/asf-bot:latest
+    container_name: asf-bot
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /opt/asf-bot/config:/app/config
+      - /opt/asf-bot/logs:/app/logs
+```
+
 ## 配置文件
 
 > 配置文件位置 config/config.json
