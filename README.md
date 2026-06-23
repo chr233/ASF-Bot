@@ -26,8 +26,7 @@ services:
     image: ghcr.io/chr233/asf-bot:latest
     container_name: asf-bot
     restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    network_mode: host
     volumes:
       - /opt/asf-bot/config:/app/config
       - /opt/asf-bot/logs:/app/logs
