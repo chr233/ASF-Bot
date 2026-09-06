@@ -21,6 +21,6 @@
     <PackageVersion Include="System.Text.Json" Version="8.0.1" />
     <PackageVersion Include="Telegram.Bot" Version="22.10.3" />
     <PackageVersion Include="SqlSugar.IOC" Version="2.0.0" />
-    <PackageVersion Include="SqlSugarCore" Version="5.1.4.217" />
+    <PackageVersion Include="SqlSugarCore" Version="5.1.4.219" />
   </ItemGroup>
 </Project>
